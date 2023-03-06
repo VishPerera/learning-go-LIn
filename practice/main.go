@@ -18,18 +18,16 @@ func main() {
 	// convert read string to a float
 	value1, err := strconv.ParseFloat(strings.TrimSpace(inNum1), 64)
 	if err != nil {
+		fmt.Println(err)
 		panic("You did not Enter a number. Exiting Program")
-	} else {
-		fmt.Println("You Entered: ", value1)
 	}
 
 	fmt.Printf("Enter a number for Value 2: ")
 	inNum2, _ := reader.ReadString('\n') // read until a newline is found
 	value2, err := strconv.ParseFloat(strings.TrimSpace(inNum2), 64)
 	if err != nil {
+		fmt.Println(err)
 		panic("You did not Enter a number. Exiting Program")
-	} else {
-		fmt.Println("You Entered: ", value2)
 	}
 
 	// sum the values and format the output to 2 decimal places
