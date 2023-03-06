@@ -1,36 +1,83 @@
+// Advanced Calculator App
+
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strconv"
+	"strings"
 )
 
+var reader = bufio.NewReader(os.Stdin) // establish a new read from stdin
+
 func main() {
-	poodle := Dog{"Poodle", 10, "Woof!"}
-	fmt.Println(poodle)
-	fmt.Printf("%+v\n", poodle)
-	fmt.Printf("Breed: %v\nWeight: %v\n", poodle.Breed, poodle.Weight)
 
-	poodle.Speak()
-	poodle.Sound = "Arf!"
-	poodle.Speak()
-	poodle.SpeakThreeTimes()
-	poodle.SpeakThreeTimes()
+	// Prompt user for inputs
+	fmt.Println("Welcome to the calculator App")
+	num1 := numRead("Enter Value 1: ")
+	num2 := numRead("Enter Value 2: ")
+	operator := selectOperator("Select one from (+ - / *): ")
+
+	var result float64
+
+	// Switch to correct math operation
+	switch operator {
+	case "+":
+		result = addValues(num1, num2)
+	case "-":
+		result = subtractValues(num1, num2)
+	case "/":
+		result = divideValues(num1, num2)
+	case "*":
+		result = multiplyValues(num1, num2)
+	default:
+		panic("Invalid Operation")
+	}
+
+	//result = math.Round(result*100) / 100
+	fmt.Println("The Result Is: ", result)
+
 }
 
-// Dog is a struct
-type Dog struct {
-	Breed  string
-	Weight int
-	Sound  string
+// Read user input number from the keyboard
+// input parameters: string to indicate which operand
+// return: number value
+// validation: validate for number. If not, panic and exit program
+func numRead(msg string) float64 {
+	fmt.Printf("%v", msg)
+	inNum1, _ := reader.ReadString('\n') // read until a newline is found
+	// convert read string to a float
+	value, err := strconv.ParseFloat(strings.TrimSpace(inNum1), 64)
+	if err != nil {
+		message := fmt.Sprintf("\"%v\" must be a number", msg)
+		panic(message)
+	}
+	return value
 }
 
-// Speak is how the dog speaks
-func (d Dog) Speak() {
-	fmt.Println(d.Sound)
+// Read a mathematical operator from the keyboard
+// input parameters: string to input an operator
+// return: operator as a byte
+// validation: validate for a character. If not, panic and exit program
+func selectOperator(msg string) string {
+	fmt.Printf("%v", msg)
+	operator, _ := reader.ReadString('\n') // read until a newline is found
+	// convert read string to a character
+	return strings.TrimSpace(operator)
 }
 
-// SpeakThreeTimes is how the dog speaks loudly
-func (d Dog) SpeakThreeTimes() {
-	d.Sound = fmt.Sprintf("%v %v %v", d.Sound, d.Sound, d.Sound)
-	fmt.Println(d.Sound)
+// List of math operations
+func addValues(num1, num2 float64) float64 {
+	return num1 + num2
+}
+func subtractValues(num1, num2 float64) float64 {
+	return num1 - num2
+}
+func divideValues(num1, num2 float64) float64 {
+	return num1 / num2
+}
+func multiplyValues(num1, num2 float64) float64 {
+	return num1 * num2
 }
