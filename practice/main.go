@@ -1,20 +1,39 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	"time"
+	"os"
+	"strconv"
+	"strings"
 )
 
 func main() {
 
-	n := time.Now()
-	fmt.Println("I recorded this video at ", n)
+	fmt.Println("Welcome to the calculator App")
 
-	t := time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC)
-	fmt.Println("Go launched at ", t)
-	fmt.Println(t.Format(time.ANSIC))
+	reader := bufio.NewReader(os.Stdin) // establish a new read from stdin
+	fmt.Printf("Enter a number for Value 1: ")
+	inNum1, _ := reader.ReadString('\n') // read until a newline is found
+	// convert read string to a float
+	value1, err := strconv.ParseFloat(strings.TrimSpace(inNum1), 64)
+	if err != nil {
+		panic("You did not Enter a number. Exiting Program")
+	} else {
+		fmt.Println("You Entered: ", value1)
+	}
 
-	parsedTime, _ := time.Parse(time.ANSIC, "Tue Nov 10 23:00:00 2009")
-	fmt.Printf("The type of parsedTime is %T\n", parsedTime)
+	fmt.Printf("Enter a number for Value 2: ")
+	inNum2, _ := reader.ReadString('\n') // read until a newline is found
+	value2, err := strconv.ParseFloat(strings.TrimSpace(inNum2), 64)
+	if err != nil {
+		panic("You did not Enter a number. Exiting Program")
+	} else {
+		fmt.Println("You Entered: ", value2)
+	}
+
+	// sum the values and format the output to 2 decimal places
+	sum := value1 + value2
+	fmt.Printf("The sum of the values %v and %v is: %.2f", value1, value2, sum)
 
 }
