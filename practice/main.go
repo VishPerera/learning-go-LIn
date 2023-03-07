@@ -1,36 +1,38 @@
+// Read and Write local text files
+
 package main
 
 import (
 	"fmt"
+	"io"
+	"io/ioutil"
+	"os"
 )
 
 func main() {
-	poodle := Dog{"Poodle", 10, "Woof!"}
-	fmt.Println(poodle)
-	fmt.Printf("%+v\n", poodle)
-	fmt.Printf("Breed: %v\nWeight: %v\n", poodle.Breed, poodle.Weight)
+	content := "Hello from Go"                 // string to be written to the file
+	file, err := os.Create("./fromString.txt") // create a file in the same directory
+	checkErrors(err)
+	length, err := io.WriteString(file, content)
+	checkErrors(err)
+	fmt.Printf("Wrote a file with %v characters\n", length)
+	defer file.Close()                 // Defer waits until everything is finished to close the file
+	defer readFile("./fromString.txt") // Wait until everything is done to read the file
 
-	poodle.Speak()
-	poodle.Sound = "Arf!"
-	poodle.Speak()
-	poodle.SpeakThreeTimes()
-	poodle.SpeakThreeTimes()
 }
 
-// Dog is a struct
-type Dog struct {
-	Breed  string
-	Weight int
-	Sound  string
+// Check for errors. If error exists, show the error and exit the program
+func checkErrors(err error) {
+	if err != nil {
+		panic(err)
+	}
 }
 
-// Speak is how the dog speaks
-func (d Dog) Speak() {
-	fmt.Println(d.Sound)
-}
-
-// SpeakThreeTimes is how the dog speaks loudly
-func (d Dog) SpeakThreeTimes() {
-	d.Sound = fmt.Sprintf("%v %v %v", d.Sound, d.Sound, d.Sound)
-	fmt.Println(d.Sound)
+// Read from file
+// data is read from the file in bytes
+// Therefore, read data should be made to a string to display: string(data)
+func readFile(fileName string) {
+	data, err := ioutil.ReadFile(fileName)
+	checkErrors(err)
+	fmt.Println("Text read from file: ", string(data))
 }
